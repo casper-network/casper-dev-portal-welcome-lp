@@ -1,0 +1,52 @@
+@use "../../../../stylesheets/mixins";
+
+.infoTileWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .title,
+    .paragraph {
+        margin-top: 20px;
+    }
+
+    .title {
+        @media (min-width: 1024px) {
+            &.truncted {
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+    }
+
+    .paragraph {
+        min-height: 72px;
+        overflow-y: auto;
+        padding-right: 10px;
+        @include mixins.custom_scrollbar(var(--black) var(--casperWhite));
+    }
+
+    .image {
+        width: 100%;
+        height: 210px;
+        border-bottom: 4px solid var(--casperRed);
+        background-color: var(--liftedBlack);
+
+        > [class*="gatsby-image-wrapper"] {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .buttonWrapper {
+        margin: 20px 0px;
+    }
+
+    @media (max-width: 1024px) {
+        &[class*="span"] {
+            grid-column: unset !important;
+        }
+    }
+}

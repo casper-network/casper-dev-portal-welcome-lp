@@ -1,0 +1,12 @@
+@use "../../../../stylesheets/variables/media-queries";
+
+.logo {
+    width: 163px;
+    min-width: 83px;
+}
+
+@media #{media-queries.$mobile} {
+    .logo {
+        width: 83px;
+    }
+}

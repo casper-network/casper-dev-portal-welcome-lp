@@ -1,0 +1,16 @@
+@use "../../stylesheets/variables/sizes";
+@use "../../stylesheets/variables/media-queries";
+
+.content {
+    color: var(--casperWhite);
+    margin-top: sizes.$navBarHeight;
+}
+
+//Mobile
+@media #{media-queries.$mobile} {
+    .content {
+        margin-top: sizes.$navBarHeightMobile;
+    }
+}
+
+//End Mobile

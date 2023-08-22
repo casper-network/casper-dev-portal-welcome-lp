@@ -1,0 +1,363 @@
+@use "../../../stylesheets/mixins";
+
+.newsletterContainer {
+    position: relative;
+    &::after {
+        position: absolute;
+        content: "";
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(146.71deg, #6a2368bd 0.43%, #1c2054d6 40.97%, #000000 85.81%, #000000 94.61%);
+        transition: opacity 0.2s ease-in;
+        z-index: 0;
+        opacity: 1;
+    }
+
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(146.71deg, #e387e0db 0.43%, #747acde6 40.97%, #f4f4f4d4 85.81%, #f4f4f478 94.61%);
+        transition: opacity 0.2s ease-in;
+        z-index: 1;
+        opacity: 0;
+    }
+    section {
+        background: none;
+        .indexForm {
+            z-index: 1;
+        }
+        .imgContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            .blank_ribbon_top {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+
+                img {
+                    object-fit: cover;
+                }
+            }
+
+            .blank_ribbon_bottom {
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+
+                img {
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
+
+.form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: start;
+    flex-direction: column;
+    z-index: 1;
+
+    p {
+        margin-bottom: 0px;
+    }
+    .email,
+    .name {
+        input {
+            width: 100%;
+            margin: 12px 0px;
+            color: black;
+            border-radius: 4px;
+            height: 38px;
+        }
+    }
+
+    .error {
+        color: red;
+    }
+
+    .email,
+    .name,
+    .iAm,
+    .country,
+    .agreeBox,
+    .description {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        padding-bottom: 24px;
+        text-transform: capitalize;
+        > [class*="container"] {
+            width: 100%;
+            margin: 12px 0px;
+        }
+    }
+
+    .agreeBox {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+
+        &_checkbox {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: row;
+            gap: 22px;
+        }
+    }
+
+    .checkInput {
+        display: none;
+    }
+
+    .checkbox {
+        width: 32px;
+        height: 32px;
+        border: 2px solid var(--casperYellow);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 3px;
+        transition: 0.3s all;
+    }
+
+    .checkbox svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .checkInput:checked + .checkbox {
+        background: var(--liftedBlack);
+        border: 2px solid var(--casperYellow);
+    }
+
+    .checkInput:checked + .checkbox svg path {
+        stroke-dasharray: 500;
+        stroke-dashoffset: 500;
+        stroke: #fff;
+        stroke-width: 3;
+        animation: check 4s forwards;
+    }
+
+    @keyframes check {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    .description {
+        .paragraphContainer {
+            width: 70%;
+
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+}
+.openSVG {
+    transform: rotate(-180deg);
+    transition: 250ms !important;
+    > svg {
+        color: black;
+    }
+}
+.closeSVG {
+    transform: rotate(0deg);
+    transition: 250ms !important;
+    > svg {
+        color: black;
+    }
+}
+.indicatorSeparator {
+    display: none;
+}
+.scrollBarSelect {
+    @include mixins.custom_scrollbar(var(--black) var(--casperWhite));
+}
+
+.isFocused {
+    background-color: var(--liftedBlack) !important;
+    color: var(--casperYellow) !important;
+}
+
+.nonFocused {
+    background-color: var(--casperWhite) !important;
+    color: var(--black) !important;
+}
+
+.noBorder {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+//Button
+.button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    border-radius: 1px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+
+    &_container {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 12px 8px 14px;
+        @include mixins.transition(background-color 0.3s ease-in-out, gap 0.3s ease-in-out);
+
+        > p {
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        > svg {
+            margin: 0;
+
+            > path {
+                width: 9.33px;
+                height: 8.17px;
+            }
+        }
+    }
+}
+
+//PrimaryBtn
+.primary {
+    background: var(--casperWhite);
+    border: 1px solid var(--casperWhite);
+    color: var(--black);
+    @include mixins.transition(background-color 0.3s ease-in-out, gap 0.3s ease-in-out);
+
+    &:not(:hover) {
+        transition: none;
+    }
+    &_container {
+        > svg {
+            > path {
+                fill: var(--black);
+            }
+        }
+    }
+
+    &:hover,
+    &:focus {
+        outline: none;
+        background: var(--primaryBtn-hover);
+        border: 1px solid var(--primaryBtn-hover);
+
+        .button_container {
+            gap: 13px;
+        }
+    }
+
+    &:active {
+        background: var(--casperWhite);
+        border: 1px solid var(--casperWhite);
+    }
+}
+
+.disabled {
+    color: var(--primaryBtn-disabled);
+    border: 1px solid var(--primaryBtn-disabled);
+    cursor: default;
+    svg {
+        > path {
+            fill: var(--primaryBtn-disabled);
+        }
+    }
+    &:hover {
+        background: var(--casperWhite);
+        border: 1px solid var(--primaryBtn-disabled);
+
+        .button_container {
+            gap: 8px;
+        }
+    }
+}
+
+//End Button
+
+.onSubmit {
+    display: flex;
+    margin-top: 96px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--casperYellow);
+
+    > h4 {
+        color: var(--casperYellow);
+        margin-bottom: 0px;
+        padding: 20px;
+    }
+}
+
+.errorSubmit {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 24px;
+
+    > h4 {
+        color: red;
+        margin-bottom: 0px;
+    }
+
+    > svg {
+        height: 24px;
+    }
+}
+
+.spinnerBox {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+[class*="section_content_text"] {
+    z-index: 1;
+}

@@ -1,0 +1,55 @@
+/* ANIMATIONS */
+
+//Spinner
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+//End Spinner
+
+//Animation Dropdown
+//Enter
+.transition-enter {
+    transform: translateY(-40px);
+    max-height: 0;
+    opacity: 0;
+}
+
+.transition-enter-active {
+    transform: translateY(0);
+    max-height: 900px;
+    opacity: 1;
+    transition: transform 1000ms, max-height 1000ms, opacity 1000ms;
+}
+
+.transition-enter-done {
+    transform: translateY(0);
+    max-height: 900px;
+    opacity: 1;
+    transition: transform 1000ms, max-height 1000ms, opacity 1000ms;
+}
+
+//Exit
+.transition-exit {
+    transform: translateY(0);
+    max-height: 900px;
+    transition: transform 500ms, max-height 500ms;
+}
+
+.transition-exit-active {
+    transform: translateY(-40px);
+    max-height: 0;
+    transition: transform 500ms, max-height 500ms;
+}
+
+.transition-exit-done {
+    transform: translateY(-40px);
+    max-height: 0;
+    transition: transform 500ms, max-height 500ms;
+}

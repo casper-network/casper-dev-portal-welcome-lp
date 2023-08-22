@@ -1,0 +1,122 @@
+@use "../../../../stylesheets/variables/media-queries";
+@use "../../../../stylesheets/mixins";
+
+.navbar_list {
+    width: 390px;
+    min-width: 390px;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    text-transform: capitalize;
+
+    .navbar_list_container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 7%;
+        text-decoration: none;
+        text-transform: none;
+
+        .navbar_list_container_button {
+            position: relative;
+            .navbar_list_item {
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 6px;
+                padding: 0;
+                cursor: pointer;
+                background-color: transparent;
+                color: var(--casperWhite);
+                border: 0;
+
+                > span {
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 24px;
+                }
+
+                > svg {
+                    width: 12px;
+                    height: 12px;
+                    transition: transform 0.15s ease;
+                    path {
+                        fill: var(--casperWhite);
+                    }
+                }
+
+                &.isActive {
+                    @include mixins.transition(0.3s all);
+                    color: var(--casperRed);
+
+                    > svg {
+                        path {
+                            @include mixins.transition(0.3s all);
+                            fill: var(--casperRed);
+                        }
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+            &:hover {
+                .navbar_list_item {
+                    @include mixins.transition(0.3s all);
+                    color: var(--casperRed);
+                }
+                svg {
+                    path {
+                        @include mixins.transition(0.3s all);
+                        fill: var(--casperRed);
+                    }
+                }
+            }
+
+            &:not(:hover) {
+                .navbar_list_item {
+                    @include mixins.transition(calc(var(--transition-time) * 2) all);
+                }
+                svg {
+                    path {
+                        @include mixins.transition(calc(var(--transition-time) * 2) all);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media #{media-queries.$mobile} {
+    .navbar_list {
+        width: 100%;
+        min-width: 200px;
+        .navbar_list_container {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            width: 100%;
+
+            .navbar_list_container_button {
+                width: 100%;
+                overflow: hidden;
+                .navbar_list_item {
+                    width: 100%;
+                    justify-content: space-between;
+                    background-color: var(--liftedBlack);
+                    z-index: 5;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar_list {
+        min-width: unset;
+    }
+}

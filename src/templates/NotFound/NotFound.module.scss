@@ -1,0 +1,166 @@
+@use "../../stylesheets/variables/sizes";
+
+.notFound {
+    background: linear-gradient(74.12deg, #652163 1.68%, #1a1e52 24.38%, #002008 36.52%, #000000 58.51%, #000000 64.68%);
+    transform: rotate(-180deg);
+    height: calc(100vh - sizes.$navBarHeight);
+    position: relative;
+
+    .alertMessage {
+        width: 480px;
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+        transform: rotate(180deg);
+        z-index: 3;
+
+        .header {
+            max-width: 480px;
+            max-height: 240px;
+
+            p {
+                background: -webkit-linear-gradient(180deg, #ff2d2e 57.29%, #9f23e1 100%);
+                font-size: 250px;
+                line-height: 290px;
+                font-weight: 500;
+                font-family: "Casper Sans";
+                -webkit-text-fill-color: transparent;
+                -webkit-background-clip: text;
+            }
+        }
+
+        span {
+            background: -webkit-linear-gradient(180deg, #ff2d2e 57.29%, #9f23e1 100%);
+            width: 100%;
+            height: 1px;
+        }
+
+        .subHeader {
+            h2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+
+        .buttonContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: row;
+            gap: 20px;
+        }
+    }
+
+    .imgContainer {
+        position: absolute;
+        transform: rotate(180deg);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+
+        .purpleCoinLeft {
+            position: absolute;
+            top: 30px;
+            left: 0px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .purpleCoinRight {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .redCoinLeft {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .redCoinRight {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+@media (max-width: 1380px) {
+    .notFound {
+        .alertMessage {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .imgContainer {
+            .purpleCoinLeft {
+                width: 370px;
+            }
+
+            .purpleCoinRight {
+                width: 250px;
+            }
+
+            .redCoinLeft {
+                width: 180px;
+            }
+
+            .redCoinRight {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .notFound {
+        .alertMessage {
+            width: 350px;
+            padding-left: 0;
+            padding-right: 0;
+
+            .header {
+                max-height: 200px;
+
+                > p {
+                    font-size: 170px;
+                }
+            }
+        }
+
+        .imgContainer {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,16 @@
+@use "./media-queries";
+// Boxes
+$navBoxWidth: 1600px;
+$contentBoxWidth: 1280px;
+$navBarHeight: 126px;
+$navBarHeightMobile: 10vh;
+
+// Spacing
+$navSpacing: 50px;
+$gapSpacing: 32px;
+
+//Content columns
+$columns: 12;
+
+//NavBar z-index
+$navBarZIndex: 20;

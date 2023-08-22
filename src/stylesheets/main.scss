@@ -1,0 +1,22 @@
+// Variables
+@use "./variables/custom-properties";
+@use "./variables/fonts-variables";
+@use "./variables/media-queries";
+@use "./variables/sizes";
+
+// Base
+@use "./mixins";
+@use "./animations";
+@use "./fonts";
+
+// Reboot
+@use "./reboot";
+
+// Third parties
+// @use "./vendor";
+
+// Common
+@use "./global";
+@use "./utilities";
+
+// Refer to *.module.scss files for specific styles

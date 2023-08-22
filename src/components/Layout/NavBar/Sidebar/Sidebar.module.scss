@@ -1,0 +1,52 @@
+@use "../../../../stylesheets/variables/sizes";
+@use "../../../../stylesheets/mixins";
+
+.sidebar {
+    position: fixed;
+    top: sizes.$navBarHeightMobile;
+    left: 0;
+    z-index: sizes.$navBarZIndex;
+    width: 100%;
+    background-color: var(--liftedBlack);
+    transform: translateX(-960px);
+    @include mixins.transition(transform 0.7s ease-in, background-color var(--transition-time) ease-in);
+    padding: 0 sizes.$navSpacing;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    overflow-x: scroll;
+    height: 90vh;
+
+    @include mixins.custom_scrollbar(var(--black) var(--casperWhite));
+
+    &_container {
+        width: 100%;
+        margin-top: 20px;
+        &_search {
+            position: relative;
+            width: 100%;
+        }
+        &_nav {
+            position: relative;
+            width: 100%;
+            margin-top: 52px;
+            svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+
+    &_social {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin: 45px 0;
+        width: 100%;
+    }
+}
+
+.sidebarOpen {
+    transform: translateX(0px);
+}

@@ -1,0 +1,107 @@
+@use "../../../stylesheets/variables/sizes";
+@use "../../../stylesheets/variables/media-queries";
+@use "../../../stylesheets/mixins";
+
+.wrapper {
+    position: relative;
+    z-index: sizes.$navBarZIndex;
+}
+
+.navbar_wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .container {
+        height: sizes.$navBarHeight;
+        background-color: var(--black);
+        color: var(--casperWhite);
+
+        .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 1%;
+            align-items: center;
+
+            .icon {
+                position: relative;
+                width: 29px;
+                height: 26px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+
+                &_cancel,
+                &_menu {
+                    position: absolute;
+                    transform: scale(all);
+                    @include mixins.transition(transform 0.3s ease-in, background-color 20ms ease-in);
+
+                    > svg {
+                        path {
+                            fill: var(--casperWhite);
+                        }
+                    }
+
+                    &:hover {
+                        > svg {
+                            path {
+                                fill: var(--casperRed);
+                            }
+                        }
+                    }
+                }
+
+                &_cancel_none,
+                &_menu_none {
+                    transform: scale(0);
+                }
+            }
+        }
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media #{media-queries.$mobile} {
+    .wrapper {
+        .navbar_wrapper {
+            .container {
+                height: sizes.$navBarHeightMobile;
+            }
+        }
+    }
+}
+
+@media (max-width: 930px) {
+    .wrapper {
+        .container {
+            .navbar {
+                &.desktop {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 931px) {
+    .wrapper {
+        .container {
+            .navbar {
+                &.mobile {
+                    display: none;
+                }
+            }
+        }
+
+        .mobile {
+            display: none;
+        }
+    }
+}
