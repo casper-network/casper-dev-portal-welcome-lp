@@ -1,0 +1,85 @@
+---
+name: Build and Deploy Staging
+
+on:
+    workflow_call:
+        inputs:
+            environment:
+                description: "The environment to deploy to"
+                required: true
+                type: string
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-22.04
+        environment:
+            name: ${{ inputs.environment }}
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js 18.x for build
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
+
+            # Mask secret variables
+            - name: Mask secret vars
+              run: |
+                  echo "::add-mask::${{ secrets.GATSBY_DIRECTUS_URL }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_DEV_SITE_URL }}" &&\
+                  echo "::add-mask::${{ secrets.DIRECTUS_TOKEN }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_APP_ID }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_SEARCH_KEY }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_INDEX }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_GH_CLIENT_ID }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_GH_SCOPES }}" &&\
+                  echo "::add-mask::${{ secrets.GOOGLE_TAG_MANAGER_ID }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_YOUTUBE_API_KEY }}" &&\
+                  echo "::add-mask::${{ secrets.S3_BUCKET_NAME }}" &&\
+                  echo "::add-mask::${{ secrets.AWS_ACCESS_KEY_ID }}" &&\
+                  echo "::add-mask::${{ secrets.AWS_SECRET_ACCESS_KEY }}" &&\
+                  echo "::add-mask::${{ secrets.AWS_REGION }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_SITE_URL }}" &&\
+                  echo "::add-mask::${{ secrets.CLOUDFRONT_ID }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_GITHUB_API }}"
+
+            - run: npm install
+
+            - run: npm run build
+              env:
+                  GATSBY_DIRECTUS_URL: ${{ secrets.GATSBY_DIRECTUS_URL }}
+                  GATSBY_DEV_SITE_URL: ${{ secrets.GATSBY_DEV_SITE_URL }}
+                  DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN }}
+                  GATSBY_ALGOLIA_APP_ID: ${{ secrets.GATSBY_ALGOLIA_APP_ID }}
+                  GATSBY_ALGOLIA_SEARCH_KEY: ${{ secrets.GATSBY_ALGOLIA_SEARCH_KEY }}
+                  GATSBY_ALGOLIA_INDEX: ${{ secrets.GATSBY_ALGOLIA_INDEX }}
+                  LOCALES: ${{ vars.LOCALES }}
+                  GATSBY_DEFAULT_LOCALE: ${{ vars.GATSBY_DEFAULT_LOCALE }}
+                  GATSBY_GH_CLIENT_ID: ${{ secrets.GATSBY_GH_CLIENT_ID }}
+                  GATSBY_GH_SCOPES: ${{ secrets.GATSBY_GH_SCOPES }}
+                  GOOGLE_TAG_MANAGER_ID: ${{ secrets.GOOGLE_TAG_MANAGER_ID }}
+                  GATSBY_YOUTUBE_API_KEY: ${{ secrets.GATSBY_YOUTUBE_API_KEY }}
+                  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  AWS_REGION: ${{ secrets.AWS_REGION }}
+                  GATSBY_SITE_URL: ${{ secrets.GATSBY_SITE_URL }}
+                  GATSBY_DOCS_ALGOLIA_APP_ID: ${{ secrets.GATSBY_DOCS_ALGOLIA_APP_ID }}
+                  GATSBY_DOCS_ALGOLIA_SEARCH_KEY: ${{ secrets.GATSBY_DOCS_ALGOLIA_SEARCH_KEY }}
+                  GATSBY_DOCS_ALGOLIA_INDEX_NAME: ${{ secrets.GATSBY_DOCS_ALGOLIA_INDEX_NAME }}
+                  GATSBY_DOCS_SITE_URL: ${{ secrets.GATSBY_DOCS_SITE_URL }}
+                  GATSBY_GITHUB_API: ${{ secrets.GATSBY_GITHUB_API }}
+
+            # TODO: use GitHub's OIDC provider in conjunction with a configured AWS IAM Identity Provider endpoint instead
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Deploy to S3
+              uses: jonelantha/gatsby-s3-action@6886fa8db9cb48761715caac380ee6861b00ed12
+              with:
+                  dest-s3-bucket: ${{ secrets.S3_BUCKET_NAME }}
+                  cloudfront-id-to-invalidate: ${{ secrets.CLOUDFRONT_ID }}
