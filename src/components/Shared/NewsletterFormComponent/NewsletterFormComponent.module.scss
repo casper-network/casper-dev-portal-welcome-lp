@@ -9,7 +9,13 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: linear-gradient(146.71deg, #6a2368bd 0.43%, #1c2054d6 40.97%, #000000 85.81%, #000000 94.61%);
+        background: linear-gradient(
+            146.71deg,
+            rgba(106, 35, 104, 1) 0.43%,
+            rgb(36 41 104 / 90%) 42.97%,
+            rgb(0, 0, 0) 85.81%,
+            rgb(0, 0, 0) 94.61%
+        );
         transition: opacity 0.2s ease-in;
         z-index: 0;
         opacity: 1;
