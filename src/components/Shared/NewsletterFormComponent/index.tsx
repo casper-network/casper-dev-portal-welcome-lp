@@ -4,10 +4,15 @@ import Select from "react-select";
 import { icons } from "../../../svg/Icons";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
+import dropdownData from "../../../../__mocks__/dropdownMock";
 
 export default function NewsletterFormComponent({ newsletterData }: any) {
+    //console.log(newsletterData);
     const [countries, setCountries] = useState([]);
     const [iamOptions, setIamOptions] = useState([]);
+    const [languageOptions, setLanguageOptions] = useState([]);
+    const [interestsOptions, setInterestsOptions] = useState([]);
+    const [blockchainOptions, setBlockchainOptions] = useState([]);
 
     const [submitError, setSubmitError] = useState<string>("");
     const [submitSuccess, setSubmitSuccess] = useState<string>("");
@@ -21,10 +26,13 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch(`${process.env.GATSBY_DIRECTUS_URL}/newsletter`);
+            const res = await fetch(`${process.env.GATSBY_DIRECTUS_URL}/newsletter/landing`);
             const json = await res.json();
             setCountries(json.countries);
             setIamOptions(json.iamOptions);
+            setLanguageOptions(json.languageOptions);
+            setInterestsOptions(json.interestsOptions);
+            setBlockchainOptions(json.blockchainOptions);
         };
 
         getData();
@@ -113,6 +121,74 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
             return true;
         }
     };
+    ////////////////////////////////////////
+
+    const selectDictionary = {
+        i_am_label: "hs_persona",
+        country_label: "country_dropdown",
+        preferred_language_label: "preferred_programming_language",
+        interests_label: "interests__developer_portal_",
+        blockchain_familiarity_label: "blockchain_familiarity"
+    };
+
+    function renderSelect({ label, options, isMulti, required, key }: any) {
+        const requiredTextKey = key.replace("label", "required_text");
+        return (
+            <div className={styles.iAm}>
+                <label htmlFor={label}>{label}</label>
+                <Select
+                    options={options}
+                    onChange={(e) => handleSelectChange(e, key)}
+                    onBlur={required ? (e) => handleSelectBlur(key) : undefined}
+                    inputId={label}
+                    isMulti={isMulti}
+                    classNames={{
+                        control: (state) => (state.menuIsOpen || state.isFocused ? styles.noBorder : styles.noBorder),
+                        option: (state) => (state.isFocused ? styles.isFocused : styles.nonFocused),
+                        menuList: () => styles.scrollBarSelect,
+                        dropdownIndicator: (state) => (state.selectProps.menuIsOpen ? styles.openSVG : styles.closeSVG),
+                        indicatorSeparator: () => styles.indicatorSeparator
+                    }}
+                />
+                {selectErrors[requiredTextKey] && <p className={styles.error}>{newsletterData[requiredTextKey]}</p>}
+            </div>
+        );
+    }
+
+    function stringifyValues(selectValues: any) {
+        const value = selectValues.map(({ value }: any) => value).join(",");
+        return value;
+    }
+
+    const [selectValues, setSelectValues] = useState<any>({});
+    const [selectErrors, setSelectErrors] = useState<any>({});
+    function handleSelectChange(e: any, key: any) {
+        const value = !Array.isArray(e) ? e.value : stringifyValues(e);
+        const newValues = { ...selectValues };
+        newValues[key] = value;
+        setSelectValues(newValues);
+        validateSelect(key, e.value);
+    }
+    function handleSelectBlur(key: string) {
+        validateSelect(key, selectValues[key]);
+    }
+
+    function validateSelect(key: string, value: string) {
+        const requiredTextKey = key.replace("label", "required_text");
+        const errors: any = { ...selectErrors };
+        console.log(errors);
+        if (!value) {
+            errors[requiredTextKey] = newsletterData[requiredTextKey];
+            setSelectErrors(errors);
+            return false;
+        } else {
+            errors[requiredTextKey] = "";
+            setSelectErrors(errors);
+            return true;
+        }
+    }
+
+    ////////////////////////////////////////
 
     const [agree, setAgree] = useState<boolean>(false);
 
@@ -136,18 +212,17 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         handleLoadingState(true);
         const emailValid = validateEmail(email);
         const firstNameValid = validateFirstName(firstName);
-        const iAmValid = validateIAm(iAm);
-        const countryValid = validateCountry(country);
+        const iAmValid = validateSelect("i_am_label", selectValues["i_am_label"]);
+        const countryValid = validateSelect("country_label", selectValues["country_label"]);
         const agreeValid = validateAgree(agree);
         const valid = emailValid && firstNameValid && iAmValid && countryValid && agreeValid;
         if (!valid) {
             handleLoadingState(false);
             return;
         }
-
         setSubmitError("");
         setSubmitSuccess("");
-        const response = await fetch(`${process.env.GATSBY_DIRECTUS_URL}/newsletter`, {
+        const response = await fetch(`${process.env.GATSBY_DIRECTUS_URL}/newsletter/landing`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -236,53 +311,45 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                                         )}
                                     </div>
 
-                                    <div className={styles.iAm}>
-                                        <label htmlFor="I am">{newsletterData.i_am_label}</label>
-                                        <Select
-                                            options={iamOptions}
-                                            onChange={handleIAmChange}
-                                            onBlur={handleIAmBlur}
-                                            inputId={"I am"}
-                                            classNames={{
-                                                control: (state) =>
-                                                    state.menuIsOpen || state.isFocused ? styles.noBorder : styles.noBorder,
-                                                option: (state) => (state.isFocused ? styles.isFocused : styles.nonFocused),
-                                                menuList: () => styles.scrollBarSelect,
-                                                dropdownIndicator: (state) =>
-                                                    state.selectProps.menuIsOpen ? styles.openSVG : styles.closeSVG,
-                                                indicatorSeparator: () => styles.indicatorSeparator
-                                            }}
-                                        />
-                                        {iAmError && (
-                                            <label htmlFor="I am Error" className={styles.error}>
-                                                {iAmError}
-                                            </label>
-                                        )}
-                                    </div>
+                                    {renderSelect({
+                                        label: newsletterData.i_am_label,
+                                        options: iamOptions,
+                                        isMulti: false,
+                                        key: "i_am_label",
+                                        required: true
+                                    })}
 
-                                    <div className={styles.country}>
-                                        <label htmlFor="Country">{newsletterData.country_label}</label>
-                                        <Select
-                                            options={countries}
-                                            onChange={handleCountryChange}
-                                            onBlur={handleCountryBlur}
-                                            inputId={"Country"}
-                                            classNames={{
-                                                control: (state) =>
-                                                    state.menuIsOpen || state.isFocused ? styles.noBorder : styles.noBorder,
-                                                option: (state) => (state.isFocused ? styles.isFocused : styles.nonFocused),
-                                                menuList: () => styles.scrollBarSelect,
-                                                dropdownIndicator: (state) =>
-                                                    state.selectProps.menuIsOpen ? styles.openSVG : styles.closeSVG,
-                                                indicatorSeparator: () => styles.indicatorSeparator
-                                            }}
-                                        />
-                                        {countryError && (
-                                            <label htmlFor="Country error" className={styles.error}>
-                                                {countryError}
-                                            </label>
-                                        )}
-                                    </div>
+                                    {renderSelect({
+                                        label: newsletterData.country_label,
+                                        options: countries,
+                                        isMulti: false,
+                                        key: "country_label",
+                                        required: true
+                                    })}
+
+                                    {renderSelect({
+                                        label: newsletterData.preferred_language_label,
+                                        options: languageOptions,
+                                        isMulti: true,
+                                        key: "preferred_language_label",
+                                        required: false
+                                    })}
+
+                                    {renderSelect({
+                                        label: newsletterData.blockchain_familiarity_label,
+                                        options: blockchainOptions,
+                                        isMulti: false,
+                                        key: "blockchain_familiarity_label",
+                                        required: false
+                                    })}
+
+                                    {renderSelect({
+                                        label: newsletterData.interests_label,
+                                        options: interestsOptions,
+                                        isMulti: true,
+                                        key: "interests_label",
+                                        required: false
+                                    })}
 
                                     <div className={styles.agreeBox}>
                                         <div className={styles.agreeBox_checkbox}>
