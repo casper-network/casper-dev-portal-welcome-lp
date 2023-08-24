@@ -1,0 +1,11 @@
+on:
+    push:
+        branches:
+            - dev
+
+jobs:
+    call-workflow-passing-data:
+        uses: ./.github/workflows/build_and_deploy.yml
+        with:
+            environment: staging
+        secrets: inherit
