@@ -389,6 +389,10 @@ body.light {
         }
     }
 
+    [class*="multiValue"] {
+        background: #f4f4f4;
+    }
+
     [class*="SearchWrapper"] {
         --casperYellow: var(--casperBlue);
         --liftedBlack: var(--black);

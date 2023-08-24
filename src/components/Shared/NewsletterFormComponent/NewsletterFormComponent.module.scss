@@ -101,7 +101,8 @@
     .iAm,
     .country,
     .agreeBox,
-    .description {
+    .description,
+    .multipleSelect {
         width: 100%;
         display: flex;
         justify-content: flex-start;
@@ -114,7 +115,23 @@
             margin: 12px 0px;
         }
     }
-
+    [class*="multiValue"] {
+        background: var(--black);
+        color: var(--casperYellow);
+        border-radius: 6px;
+        > [class*="MultiValueGeneric"] {
+            color: var(--casperYellow);
+        }
+        > [class*="MultiValueRemove"] {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            &:hover {
+                background: var(--casperYellow);
+                color: var(--black);
+                cursor: pointer;
+            }
+        }
+    }
     .agreeBox {
         margin: 1rem 0;
         display: flex;
