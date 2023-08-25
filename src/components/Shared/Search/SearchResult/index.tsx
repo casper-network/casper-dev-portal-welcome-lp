@@ -144,37 +144,20 @@ export default function SearchResult({ hits, setHasFocus, closebothNavBar, searc
                                 hit._highlightResult?.title?.matchedWords?.length > 0 ||
                                 hit._highlightResult?.internal?.content?.matchedWords?.length > 0
                             ) {
-                                if (hit.basePath == null) {
-                                    return (
-                                        <LocalizedLink
-                                            to={hit.path}
-                                            className={` ${styles.results_container_hit}`}
-                                            key={`${hit.objectID}-${i}`}
-                                            onClick={linkClicked}
-                                        >
-                                            <div className={styles.results_container_hit_link}>
-                                                {icons.search}
-                                                {highlight(hit)}
-                                            </div>
-                                            {icons.arrowLink}
-                                        </LocalizedLink>
-                                    );
-                                } else {
-                                    return (
-                                        <a
-                                            href={hit.path}
-                                            className={`${styles.results_container_hit}`}
-                                            key={`${hit.objectID}-${i}`}
-                                            onClick={linkClicked}
-                                        >
-                                            <div className={styles.results_container_hit_link}>
-                                                {icons.search}
-                                                {highlight(hit)}
-                                            </div>
-                                            {icons.arrowLink}
-                                        </a>
-                                    );
-                                }
+                                return (
+                                    <a
+                                        href={`${process.env.GATSBY_DEV_SITE_URL}${hit.path}`}
+                                        className={`${styles.results_container_hit}`}
+                                        key={`${hit.objectID}-${i}`}
+                                        onClick={linkClicked}
+                                    >
+                                        <div className={styles.results_container_hit_link}>
+                                            {icons.search}
+                                            {highlight(hit)}
+                                        </div>
+                                        {icons.arrowLink}
+                                    </a>
+                                );
                             } else if (hit.lvl0) {
                                 return (
                                     <div className={`${styles.results_container_hit}`} key={`${hit.objectID}-${i}`}>

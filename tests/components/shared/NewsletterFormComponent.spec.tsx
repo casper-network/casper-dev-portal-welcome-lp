@@ -1,13 +1,11 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-
 import NewsletterFormComponent from "../../../src/components/Shared/NewsletterFormComponent";
 import "../../../__mocks__/matchMedia";
-import { IButton } from "../../../src/utils/Types/button";
-import { IGatsbyImageData } from "gatsby-plugin-image";
 import { pageContext } from "../../../__mocks__/homePageContext";
 import User from "@testing-library/user-event";
+
 jest.mock("gatsby-plugin-image", () => {
     return {
         __esModule: true,
@@ -17,7 +15,7 @@ jest.mock("gatsby-plugin-image", () => {
     };
 });
 
-const context = { newsletter: pageContext.data.directus.newsletter_page.translations[0] };
+const context = pageContext.data.directus.acqlanding.translations[0].newsletter;
 
 describe("NewsletterFormComponent", () => {
     let originalFetch;
@@ -38,13 +36,13 @@ describe("NewsletterFormComponent", () => {
 
     it("Should render", async () => {
         mockFetchSuccess();
-        render(<NewsletterFormComponent pageContext={context}></NewsletterFormComponent>);
-        expect(await screen.findByText("Sign up for the Developer Newsletter")).toBeInTheDocument();
+        render(<NewsletterFormComponent newsletterData={context}></NewsletterFormComponent>);
+        expect(await screen.findByText("Begin your Casper journey")).toBeInTheDocument();
     });
 
     it("Should send form correctly", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context}></NewsletterFormComponent>);
+        const { container } = render(<NewsletterFormComponent newsletterData={context}></NewsletterFormComponent>);
 
         await fillForm(container);
 
@@ -54,8 +52,8 @@ describe("NewsletterFormComponent", () => {
     it("Should send form correctly and show default success message", async () => {
         mockFetchSuccess();
         const tempContext = JSON.parse(JSON.stringify(context));
-        tempContext.newsletter.success_message = undefined;
-        const { container } = render(<NewsletterFormComponent pageContext={tempContext} />);
+        tempContext.success_message = undefined;
+        const { container } = render(<NewsletterFormComponent newsletterData={tempContext} />);
         await fillForm(container);
 
         expect(await screen.findByText("Success")).toBeInTheDocument();
@@ -63,7 +61,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should fail to send form", async () => {
         mockFetchPostError();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         await fillForm(container);
 
@@ -72,8 +70,8 @@ describe("NewsletterFormComponent", () => {
     it("Should fail to send form and show default message", async () => {
         mockFetchPostError();
         const tempContext = JSON.parse(JSON.stringify(context));
-        tempContext.newsletter.error_message = undefined;
-        const { container } = render(<NewsletterFormComponent pageContext={tempContext} />);
+        tempContext.error_message = undefined;
+        const { container } = render(<NewsletterFormComponent newsletterData={tempContext} />);
         await fillForm(container);
 
         expect(await screen.findByText("Error")).toBeInTheDocument();
@@ -81,7 +79,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate incorrect email", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const emailInput = container.querySelector("#email")!;
 
@@ -93,8 +91,8 @@ describe("NewsletterFormComponent", () => {
     it("Should validate incorrect email with default message", async () => {
         mockFetchSuccess();
         const tempContext = JSON.parse(JSON.stringify(context));
-        tempContext.newsletter.email_invalid_text = undefined;
-        const { container } = render(<NewsletterFormComponent pageContext={tempContext} />);
+        tempContext.email_invalid_text = undefined;
+        const { container } = render(<NewsletterFormComponent newsletterData={tempContext} />);
 
         const emailInput = container.querySelector("#email")!;
 
@@ -105,7 +103,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate empty fields", async () => {
         mockFetchSuccess();
-        render(<NewsletterFormComponent pageContext={context} />);
+        render(<NewsletterFormComponent newsletterData={context} />);
 
         const submitBtn = screen.getByRole("button", { name: /join now/i });
 
@@ -121,15 +119,14 @@ describe("NewsletterFormComponent", () => {
     it("Should validate empty fields with default message", async () => {
         mockFetchSuccess();
         const tempContext = JSON.parse(JSON.stringify(context));
-        tempContext.newsletter.email_required_text = undefined as any;
-        tempContext.newsletter.firt_name_required_text = undefined as any;
-        tempContext.newsletter.i_am_required_text = undefined as any;
-        tempContext.newsletter.country_required_text = undefined as any;
-        tempContext.newsletter.agree_required_text = undefined as any;
-        render(<NewsletterFormComponent pageContext={tempContext} />);
+        tempContext.email_required_text = undefined as any;
+        tempContext.firt_name_required_text = undefined as any;
+        tempContext.i_am_required_text = undefined as any;
+        tempContext.country_required_text = undefined as any;
+        tempContext.agree_required_text = undefined as any;
+        render(<NewsletterFormComponent newsletterData={tempContext} />);
 
         const submitBtn = screen.getByRole("button", { name: /join now/i });
-
         await User.click(submitBtn);
 
         expect(await screen.findByText(/Email is required/i)).toBeInTheDocument();
@@ -141,7 +138,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate email on blur", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const iAmSelect = screen.getAllByRole("combobox")[0];
         const emailInput = container.querySelector("#email")!;
@@ -154,7 +151,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate name on blur", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const nameInput = container.querySelector("#first_name")!;
         const iAmSelect = screen.getAllByRole("combobox")[0];
@@ -167,7 +164,7 @@ describe("NewsletterFormComponent", () => {
     it("Should validate 'i am' on blur", async () => {
         mockFetchSuccess();
 
-        render(<NewsletterFormComponent pageContext={context} />);
+        render(<NewsletterFormComponent newsletterData={context} />);
 
         const iAmSelect = screen.getAllByRole("combobox")[0];
         const countrySelect = screen.getAllByRole("combobox")[1];
@@ -179,7 +176,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate country on blur", async () => {
         mockFetchSuccess();
-        render(<NewsletterFormComponent pageContext={context} />);
+        render(<NewsletterFormComponent newsletterData={context} />);
 
         const iAmSelect = screen.getAllByRole("combobox")[0];
         const countrySelect = screen.getAllByRole("combobox")[1];
@@ -191,7 +188,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should validate agree checkbox when unchecked", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const checkbox = container.querySelector("label[for=checkbox]")!;
 
@@ -203,7 +200,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Should change checkbox on 'Enter' key press ", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const checkbox = container.querySelector("label[for=checkbox]")!;
         const checkInput = container.querySelector("#checkbox") as HTMLInputElement;
@@ -215,7 +212,7 @@ describe("NewsletterFormComponent", () => {
 
     it("Shouldn't change checkbox on other key press ", async () => {
         mockFetchSuccess();
-        const { container } = render(<NewsletterFormComponent pageContext={context} />);
+        const { container } = render(<NewsletterFormComponent newsletterData={context} />);
 
         const checkbox = container.querySelector("label[for=checkbox]")!;
         const checkInput = container.querySelector("#checkbox") as HTMLInputElement;

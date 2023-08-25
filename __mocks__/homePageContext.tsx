@@ -281,31 +281,25 @@ export const pageContext = {
                                     }
                                 }
                             ]
-                        }
-                    }
-                ]
-            },
-
-            newsletter_page: {
-                translations: [
-                    {
-                        languages_code: {
-                            code: "en-US"
                         },
-                        agree_label: "I agree to receive communications from Casper Association.",
-                        button_text: "Join now",
-                        country_label: "Country",
-                        description: "<p>Casper Association is committed to protecting and respecting your privacy.</p>",
-                        email_label: "Email",
-                        first_name_label: "First Name",
-                        i_am_label: "I am",
-                        success_message: "You are going to receive an email to complete your subscription",
-                        error_message: "There was an error. Please validate your information and try again",
-                        email_required_text: "Email is required",
-                        email_invalid_text: "Enter a valid email",
-                        firt_name_required_text: "First Name is required",
-                        country_required_text: "Country is required",
-                        i_am_required_text: "I Am is required"
+                        newsletter: {
+                            header: "Begin your Casper journey",
+                            subheader: "Sign up for a series of five emails to introduce you to the Casper developer community",
+                            agree_label: "I agree to receive communications from Casper Association.",
+                            button_text: "Join now",
+                            country_label: "Country",
+                            description: "<p>Casper Association is committed to protecting and respecting your privacy.</p>",
+                            email_label: "Email",
+                            first_name_label: "First Name",
+                            i_am_label: "I am",
+                            success_message: "You are going to receive an email to complete your subscription",
+                            error_message: "There was an error. Please validate your information and try again",
+                            email_required_text: "Email is required",
+                            email_invalid_text: "Enter a valid email",
+                            firt_name_required_text: "First Name is required",
+                            country_required_text: "Country is required",
+                            i_am_required_text: "I Am is required"
+                        }
                     }
                 ]
             }
