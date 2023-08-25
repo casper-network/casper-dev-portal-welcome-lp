@@ -119,6 +119,9 @@ export const query = graphql`
                         first_name_required_text
                         country_required_text
                         i_am_required_text
+                        preferred_language_label
+                        blockchain_familiarity_label
+                        interests_label
                     }
                 }
             }
