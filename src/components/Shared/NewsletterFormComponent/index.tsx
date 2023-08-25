@@ -4,10 +4,8 @@ import Select from "react-select";
 import { icons } from "../../../svg/Icons";
 import Section from "../Section";
 import { StaticImage } from "gatsby-plugin-image";
-import dropdownData from "../../../../__mocks__/dropdownMock";
 
 export default function NewsletterFormComponent({ newsletterData }: any) {
-    //console.log(newsletterData);
     const [countries, setCountries] = useState([]);
     const [iamOptions, setIamOptions] = useState([]);
     const [languageOptions, setLanguageOptions] = useState([]);
@@ -16,13 +14,6 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
 
     const [submitError, setSubmitError] = useState<string>("");
     const [submitSuccess, setSubmitSuccess] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-
-    function handleLoadingState(boolState: boolean) {
-        if (document && !boolState) document.body.classList.remove("preventScrollDocument");
-        else if (document && boolState) document.body.classList.add("preventScrollDocument");
-        setLoading(boolState);
-    }
 
     useEffect(() => {
         const getData = async () => {
@@ -82,64 +73,14 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         }
     };
 
-    // -- I am
-    const [iAm, setIAm] = useState<string>("");
-    const [iAmError, setIAmError] = useState<string>("");
-    const handleIAmChange = ({ value }: any) => {
-        setIAm(value);
-        validateIAm(value);
-    };
-    const handleIAmBlur = () => {
-        validateIAm(iAm);
-    };
-    const validateIAm = (iAmValue: string): boolean => {
-        if (!iAmValue) {
-            setIAmError(newsletterData.i_am_required_text ?? `${newsletterData.i_am_label} is required`);
-            return false;
-        } else {
-            setIAmError("");
-            return true;
-        }
-    };
-
-    // -- Country
-    const [country, setCountry] = useState<string>("");
-    const [countryError, setCountryError] = useState<string>("");
-    const handleCountryChange = ({ value }: any) => {
-        setCountry(value);
-        validateCountry(value);
-    };
-    const handleCountryBlur = () => {
-        validateCountry(country);
-    };
-    const validateCountry = (countryValue: string): boolean => {
-        if (!countryValue) {
-            setCountryError(newsletterData.country_required_text ?? `${newsletterData.country_label} is required`);
-            return false;
-        } else {
-            setCountryError("");
-            return true;
-        }
-    };
-    ////////////////////////////////////////
-
-    const selectDictionary = {
-        i_am_label: "hs_persona",
-        country_label: "country_dropdown",
-        preferred_language_label: "preferred_programming_language",
-        interests_label: "interests__developer_portal_",
-        blockchain_familiarity_label: "blockchain_familiarity"
-    };
-
     function renderSelect({ label, options, isMulti, required, key }: any) {
-        const requiredTextKey = key.replace("label", "required_text");
         return (
             <div className={styles.iAm}>
                 <label htmlFor={label}>{label}</label>
                 <Select
                     options={options}
                     onChange={(e) => handleSelectChange(e, key)}
-                    onBlur={required ? (e) => handleSelectBlur(key) : undefined}
+                    onBlur={required ? () => handleSelectBlur(key) : undefined}
                     inputId={label}
                     isMulti={isMulti}
                     classNames={{
@@ -150,13 +91,13 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                         indicatorSeparator: () => styles.indicatorSeparator
                     }}
                 />
-                {selectErrors[requiredTextKey] && <p className={styles.error}>{newsletterData[requiredTextKey]}</p>}
+                {selectErrors[key] && required && <p className={styles.error}>{selectErrors[key]}</p>}
             </div>
         );
     }
 
     function stringifyValues(selectValues: any) {
-        const value = selectValues.map(({ value }: any) => value).join(",");
+        const value = selectValues.map(({ value }: { value: string }) => value).join(",");
         return value;
     }
 
@@ -175,20 +116,17 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
 
     function validateSelect(key: string, value: string) {
         const requiredTextKey = key.replace("label", "required_text");
-        const errors: any = { ...selectErrors };
-        console.log(errors);
+        const errors: any = {};
         if (!value) {
-            errors[requiredTextKey] = newsletterData[requiredTextKey];
-            setSelectErrors(errors);
+            errors[key] = newsletterData[requiredTextKey] ?? `${newsletterData[key]} is required`;
+            setSelectErrors((selectErrors: any) => ({ ...selectErrors, ...errors }));
             return false;
         } else {
-            errors[requiredTextKey] = "";
-            setSelectErrors(errors);
+            errors[key] = "";
+            setSelectErrors((selectErrors: any) => ({ ...selectErrors, ...errors }));
             return true;
         }
     }
-
-    ////////////////////////////////////////
 
     const [agree, setAgree] = useState<boolean>(false);
 
@@ -209,7 +147,6 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
     };
 
     const handleSubmit = async () => {
-        handleLoadingState(true);
         const emailValid = validateEmail(email);
         const firstNameValid = validateFirstName(firstName);
         const iAmValid = validateSelect("i_am_label", selectValues["i_am_label"]);
@@ -217,7 +154,6 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         const agreeValid = validateAgree(agree);
         const valid = emailValid && firstNameValid && iAmValid && countryValid && agreeValid;
         if (!valid) {
-            handleLoadingState(false);
             return;
         }
         setSubmitError("");
@@ -230,8 +166,11 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
             body: JSON.stringify({
                 email,
                 firstname: firstName,
-                hs_persona: iAm,
-                country_dropdown: country
+                hs_persona: selectValues["i_am_label"],
+                country_dropdown: selectValues["country_label"],
+                preferred_programming_language: selectValues["preferred_language_label"] ?? "",
+                interests__developer_portal_: selectValues["interests_label"] ?? "",
+                blockchain_familiarity: selectValues["blockchain_familiarity_label"] ?? ""
             })
         });
 
@@ -240,7 +179,6 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         } else {
             setSubmitSuccess(newsletterData.success_message ?? "Success");
         }
-        handleLoadingState(false);
     };
 
     function handleCheckChange(e: any) {
@@ -316,7 +254,8 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                                         options: iamOptions,
                                         isMulti: false,
                                         key: "i_am_label",
-                                        required: true
+                                        required: true,
+                                        defaultError: "I am is required"
                                     })}
 
                                     {renderSelect({
@@ -324,7 +263,8 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                                         options: countries,
                                         isMulti: false,
                                         key: "country_label",
-                                        required: true
+                                        required: true,
+                                        defaultError: "Country is required"
                                     })}
 
                                     {renderSelect({

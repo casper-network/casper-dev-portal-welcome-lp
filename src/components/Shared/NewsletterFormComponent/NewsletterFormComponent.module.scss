@@ -119,16 +119,21 @@
         background: var(--black);
         color: var(--casperYellow);
         border-radius: 6px;
-        > [class*="MultiValueGeneric"] {
-            color: var(--casperYellow);
+
+        [class*="css"] {
+            color: var(--casperYellow) !important;
         }
-        > [class*="MultiValueRemove"] {
+
+        > div:nth-child(2) {
             border-top-right-radius: 6px;
             border-bottom-right-radius: 6px;
             &:hover {
                 background: var(--casperYellow);
-                color: var(--black);
+                color: var(--black) !important;
                 cursor: pointer;
+                svg {
+                    color: var(--black) !important;
+                }
             }
         }
     }
@@ -383,4 +388,8 @@
 
 [class*="section_content_text"] {
     z-index: 1;
+}
+
+[class*="indicatorContainer"] {
+    cursor: pointer;
 }
