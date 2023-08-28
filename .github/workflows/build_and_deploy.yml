@@ -72,7 +72,7 @@ jobs:
 
             # TODO: use GitHub's OIDC provider in conjunction with a configured AWS IAM Identity Provider endpoint instead
             - name: Configure AWS Credentials
-              uses: aws-actions/configure-aws-credentials@v2
+              uses: aws-actions/configure-aws-credentials@v3
               with:
                   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
