@@ -28,9 +28,6 @@ jobs:
                   echo "::add-mask::${{ secrets.GATSBY_DIRECTUS_URL }}" &&\
                   echo "::add-mask::${{ secrets.GATSBY_DEV_SITE_URL }}" &&\
                   echo "::add-mask::${{ secrets.DIRECTUS_TOKEN }}" &&\
-                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_APP_ID }}" &&\
-                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_SEARCH_KEY }}" &&\
-                  echo "::add-mask::${{ secrets.GATSBY_ALGOLIA_INDEX }}" &&\
                   echo "::add-mask::${{ secrets.GATSBY_GH_CLIENT_ID }}" &&\
                   echo "::add-mask::${{ secrets.GATSBY_GH_SCOPES }}" &&\
                   echo "::add-mask::${{ secrets.GOOGLE_TAG_MANAGER_ID }}" &&\
@@ -41,6 +38,7 @@ jobs:
                   echo "::add-mask::${{ secrets.AWS_REGION }}" &&\
                   echo "::add-mask::${{ secrets.GATSBY_SITE_URL }}" &&\
                   echo "::add-mask::${{ secrets.CLOUDFRONT_ID }}" &&\
+                  echo "::add-mask::${{ secrets.GATSBY_DOCS_SITE_URL }}" &&\
                   echo "::add-mask::${{ secrets.GATSBY_GITHUB_API }}"
 
             - run: npm install
@@ -50,9 +48,9 @@ jobs:
                   GATSBY_DIRECTUS_URL: ${{ secrets.GATSBY_DIRECTUS_URL }}
                   GATSBY_DEV_SITE_URL: ${{ secrets.GATSBY_DEV_SITE_URL }}
                   DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_TOKEN }}
-                  GATSBY_ALGOLIA_APP_ID: ${{ secrets.GATSBY_ALGOLIA_APP_ID }}
-                  GATSBY_ALGOLIA_SEARCH_KEY: ${{ secrets.GATSBY_ALGOLIA_SEARCH_KEY }}
-                  GATSBY_ALGOLIA_INDEX: ${{ secrets.GATSBY_ALGOLIA_INDEX }}
+                  GATSBY_ALGOLIA_APP_ID: ${{ vars.GATSBY_ALGOLIA_APP_ID }}
+                  GATSBY_ALGOLIA_SEARCH_KEY: ${{ vars.GATSBY_ALGOLIA_SEARCH_KEY }}
+                  GATSBY_ALGOLIA_INDEX: ${{ vars.GATSBY_ALGOLIA_INDEX }}
                   LOCALES: ${{ vars.LOCALES }}
                   GATSBY_DEFAULT_LOCALE: ${{ vars.GATSBY_DEFAULT_LOCALE }}
                   GATSBY_GH_CLIENT_ID: ${{ secrets.GATSBY_GH_CLIENT_ID }}
@@ -64,9 +62,9 @@ jobs:
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   AWS_REGION: ${{ secrets.AWS_REGION }}
                   GATSBY_SITE_URL: ${{ secrets.GATSBY_SITE_URL }}
-                  GATSBY_DOCS_ALGOLIA_APP_ID: ${{ secrets.GATSBY_DOCS_ALGOLIA_APP_ID }}
-                  GATSBY_DOCS_ALGOLIA_SEARCH_KEY: ${{ secrets.GATSBY_DOCS_ALGOLIA_SEARCH_KEY }}
-                  GATSBY_DOCS_ALGOLIA_INDEX_NAME: ${{ secrets.GATSBY_DOCS_ALGOLIA_INDEX_NAME }}
+                  GATSBY_DOCS_ALGOLIA_APP_ID: ${{ vars.GATSBY_DOCS_ALGOLIA_APP_ID }}
+                  GATSBY_DOCS_ALGOLIA_SEARCH_KEY: ${{ vars.GATSBY_DOCS_ALGOLIA_SEARCH_KEY }}
+                  GATSBY_DOCS_ALGOLIA_INDEX_NAME: ${{ vars.GATSBY_DOCS_ALGOLIA_INDEX_NAME }}
                   GATSBY_DOCS_SITE_URL: ${{ secrets.GATSBY_DOCS_SITE_URL }}
                   GATSBY_GITHUB_API: ${{ secrets.GATSBY_GITHUB_API }}
 
