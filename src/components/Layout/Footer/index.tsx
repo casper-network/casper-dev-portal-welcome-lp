@@ -31,19 +31,7 @@ function Footer() {
                                     }
                                 }
                             }
-                            link_column {
-                                footer_link_column_id {
-                                    title
-                                    links {
-                                        link_id {
-                                            title
-                                            type
-                                            url
-                                            open_in_new_tab
-                                        }
-                                    }
-                                }
-                            }
+
                             bottom_links {
                                 link_id {
                                     title
@@ -95,7 +83,6 @@ function Footer() {
                                     </div>
                                 )}
                             </div>
-                            {footer.link_column && <Nav footer={footer} />}
                         </div>
                         {footer.bottom_links && (
                             <div className={styles.footer_container_bottomData}>
