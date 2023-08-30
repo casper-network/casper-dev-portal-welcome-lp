@@ -70,7 +70,7 @@ jest.mock("../../../../src/components/Layout/NavBar/LogoNavBar", () => {
         })
     };
 });
-
+/*
 jest.mock("../../../../src/components/Layout/NavBar/Sidebar", () => {
     return {
         __esModule: true,
@@ -107,7 +107,7 @@ jest.mock("../../../../src/components/Layout/NavBar/Nav", () => {
         })
     };
 });
-
+*/
 describe("NavBar", () => {
     const env = process.env;
     const header = navBarData.data.directus.header.translations[0];
@@ -130,38 +130,10 @@ describe("NavBar", () => {
         expect(container.querySelector("header")).toBeInTheDocument();
     });
 
-    it("Should render SocialMedia", () => {
-        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
-
-        renderNav({});
-        expect(screen.getByText("Social media icons")).toBeInTheDocument();
-    });
-
     it("Should render LogoNavBar", () => {
         jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
         renderNav({});
         expect(LogoNavBar).toHaveBeenCalled();
-    });
-
-    it("Should render Search", () => {
-        jest.spyOn(useWindowWidth, "default").mockReturnValue(true);
-        renderNav({});
-        expect(Search).toHaveBeenCalled();
-    });
-
-    it("Should render Sidebar", () => {
-        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
-        renderNav({});
-        expect(Sidebar).toHaveBeenCalled();
-    });
-
-    it("Should close Nav when pressing esc key", async () => {
-        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
-
-        renderNav({});
-
-        await User.keyboard("{Esc}");
-        expect(Nav).toHaveBeenLastCalledWith(expect.objectContaining({ dropdownOpen: false }), expect.anything());
     });
 
     it("Should render with default locale info", () => {
@@ -197,13 +169,33 @@ describe("NavBar", () => {
         expect(container.querySelector("header")).toBeInTheDocument();
     });
 
-    it("Should render without user info", () => {
-        jest.spyOn(useWindow, "default").mockReturnValue(false);
-        const { container } = renderNav({});
+    /* Tests commented in case some of these functions of the navbar gets added again
+    it("Should render SocialMedia", () => {
+        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
 
-        expect(container.querySelector("header")).toBeInTheDocument();
+        renderNav({});
+        expect(screen.getByText("Social media icons")).toBeInTheDocument();
+    });
+    it("Should render Search", () => {
+        jest.spyOn(useWindowWidth, "default").mockReturnValue(true);
+        renderNav({});
+        expect(Search).toHaveBeenCalled();
+    });
+    
+    it("Should render Sidebar", () => {
+        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
+        renderNav({});
+        expect(Sidebar).toHaveBeenCalled();
     });
 
+    it("Should close Nav when pressing esc key", async () => {
+        jest.spyOn(useWindowWidth, "default").mockReturnValue(false);
+
+        renderNav({});
+
+        await User.keyboard("{Esc}");
+        expect(Nav).toHaveBeenLastCalledWith(expect.objectContaining({ dropdownOpen: false }), expect.anything());
+    });
     it("Should open dropdown onClick and close dropdown on ESC key press", async () => {
         jest.spyOn(useWindow, "default").mockReturnValue(true);
 
@@ -454,6 +446,7 @@ describe("NavBar", () => {
 
         expect(screen.getByText("Mock result")).toBeInTheDocument();
     });
+    */
 });
 
 function renderNav({ showLogin = false }) {

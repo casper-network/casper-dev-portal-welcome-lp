@@ -7,8 +7,6 @@ import { navBarData } from "../../../../__mocks__/navBarData";
 import LogoNavBar from "../../../../src/components/Layout/NavBar/LogoNavBar";
 import User from "@testing-library/user-event";
 
-const closeMobileNavbar = jest.fn();
-
 const header = navBarData.data.directus.header.translations[0];
 describe("LogoNavBar", () => {
     it("Should render", () => {
@@ -26,7 +24,7 @@ describe("LogoNavBar", () => {
 
         header.logo.imageFile.fields.svg = tempHeader;
     });
-
+    /* Test commented in case this functionality gets added again.
     it("Should call closeNavBarHandler onClick", async () => {
         renderLogo();
         const logo = screen.getByTitle(header.logo.title);
@@ -35,6 +33,7 @@ describe("LogoNavBar", () => {
 
         expect(closeMobileNavbar).toHaveBeenCalled();
     });
+    */
 });
 
 function renderLogo() {
@@ -42,7 +41,7 @@ function renderLogo() {
     const pageContext = { locale: "en-US", defaultLocale: "en-US", locales: "", localizePath };
     return render(
         <LocalizationContext.Provider value={pageContext}>
-            <LogoNavBar header={header} closeMobileNavbar={closeMobileNavbar} />
+            <LogoNavBar header={header} />
         </LocalizationContext.Provider>
     );
 }

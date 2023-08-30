@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, KeyboardEventHandler } from "react";
 import * as styles from "./ThemeSwitch.module.scss";
 import { icons } from "../../../../svg/Icons";
 import { ThemeContext } from "../../../../context/ThemeContext";
@@ -10,14 +10,25 @@ function ThemeSwitch() {
         setLoaded(true);
     }, [lightTheme]);
 
+    function handleKeyPress(e: any) {
+        if (e.key === "Enter") {
+            setLightTheme(!lightTheme);
+        }
+    }
     return (
         <div className={styles.switchWrapper}>
             {loaded && (
                 <>
-                    <label htmlFor="switch" className={lightTheme ? styles.light : ""} data-testid="switch-label">
+                    <label
+                        tabIndex={0}
+                        htmlFor="switch"
+                        className={lightTheme ? styles.light : ""}
+                        onKeyUp={handleKeyPress}
+                        data-testid="switch-label"
+                    >
                         {lightTheme ? icons.sun : icons.moon}
                     </label>
-                    <input id="switch" type="checkbox" aria-hidden="true" onChange={() => setLightTheme(!lightTheme)}></input>
+                    <input tabIndex={0} id="switch" type="checkbox" aria-hidden="true" onChange={() => setLightTheme(!lightTheme)}></input>
                 </>
             )}
         </div>

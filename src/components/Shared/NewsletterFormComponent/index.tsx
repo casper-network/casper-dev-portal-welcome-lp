@@ -186,7 +186,7 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         handleAgreeChange();
     }
     return (
-        <div className={styles.newsletterContainer}>
+        <div className={styles.newsletterContainer} id="newsletter-form">
             <Section
                 header="Begin your Casper journey"
                 subheader="Sign up for a series of five emails to introduce you to the Casper developer community"

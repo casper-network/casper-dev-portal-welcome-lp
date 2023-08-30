@@ -77,31 +77,3 @@
         }
     }
 }
-
-@media (max-width: 930px) {
-    .wrapper {
-        .container {
-            .navbar {
-                &.desktop {
-                    display: none;
-                }
-            }
-        }
-    }
-}
-
-@media (min-width: 931px) {
-    .wrapper {
-        .container {
-            .navbar {
-                &.mobile {
-                    display: none;
-                }
-            }
-        }
-
-        .mobile {
-            display: none;
-        }
-    }
-}

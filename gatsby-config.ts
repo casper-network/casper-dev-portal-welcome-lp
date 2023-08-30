@@ -18,6 +18,13 @@ const config: GatsbyConfig = {
     plugins: [
         "gatsby-plugin-sass",
         {
+            resolve: "gatsby-plugin-anchor-links",
+            options: {
+                offset: -100,
+                duration: 100
+            }
+        },
+        {
             resolve: "gatsby-plugin-sitemap",
             options: {
                 excludes: ["/login"],

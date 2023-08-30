@@ -32,6 +32,16 @@ export const query = graphql`
                                 }
                             }
                         }
+                        buttons {
+                            id
+                            link_button_id {
+                                inverted
+                                text
+                                type
+                                url
+                                open_in_new_tab
+                            }
+                        }
                         image {
                             id
                             title

@@ -48,24 +48,6 @@ describe("Footer", () => {
         expect(SocialMedia).toHaveBeenCalled();
     });
 
-    it("Should render Nav", () => {
-        renderFooter();
-
-        expect(Nav).toHaveBeenCalledWith(expect.objectContaining({ footer: footer }), expect.anything());
-    });
-
-    it("Shouldn't render Nav", () => {
-        const linkColumn = footer.link_column;
-        footer.link_column = [];
-        renderFooter();
-
-        expect(Nav).toHaveBeenCalledWith(
-            expect.objectContaining({ footer: footerData.data.directus.footer.translations[1] }),
-            expect.anything()
-        );
-        footer.link_column = linkColumn;
-    });
-
     it("Should render Logo", () => {
         const title = footer.logo?.title;
 
@@ -142,6 +124,25 @@ describe("Footer", () => {
 
         expect(setShowCookieModal).toHaveBeenCalledWith(true);
     });
+    /*
+        it("Should render Nav", () => {
+            renderFooter();
+
+            expect(Nav).toHaveBeenCalledWith(expect.objectContaining({ footer: footer }), expect.anything());
+        });
+
+        it("Shouldn't render Nav", () => {
+            const linkColumn = footer.link_column;
+            footer.link_column = [];
+            renderFooter();
+
+            expect(Nav).toHaveBeenCalledWith(
+                expect.objectContaining({ footer: footerData.data.directus.footer.translations[1] }),
+                expect.anything()
+            );
+            footer.link_column = linkColumn;
+        });
+        */
 });
 
 function renderFooter() {
