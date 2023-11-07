@@ -77,7 +77,7 @@ jobs:
                   aws-region: ${{ secrets.AWS_REGION }}
 
             - name: Deploy to S3
-              uses: jonelantha/gatsby-s3-action@6886fa8db9cb48761715caac380ee6861b00ed12
+              uses: jonelantha/gatsby-s3-action@329c59838f0094ed20c97678acf7b895f17ebde3
               with:
                   dest-s3-bucket: ${{ secrets.S3_BUCKET_NAME }}
                   cloudfront-id-to-invalidate: ${{ secrets.CLOUDFRONT_ID }}
