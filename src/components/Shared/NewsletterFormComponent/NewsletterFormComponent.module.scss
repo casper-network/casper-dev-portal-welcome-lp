@@ -2,6 +2,7 @@
 
 .newsletterContainer {
     position: relative;
+    background: var(--casperBlack);
     &::after {
         position: absolute;
         content: "";
@@ -9,35 +10,27 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: linear-gradient(
-            146.71deg,
-            rgba(106, 35, 104, 1) 0.43%,
-            rgb(36 41 104 / 90%) 42.97%,
-            rgb(0, 0, 0) 85.81%,
-            rgb(0, 0, 0) 94.61%
-        );
+        background: linear-gradient(var(--gradient));
         transition: opacity 0.2s ease-in;
         z-index: 0;
         opacity: 1;
     }
-
-    &::before {
-        position: absolute;
-        content: "";
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: linear-gradient(146.71deg, #e387e0db 0.43%, #747acde6 40.97%, #f4f4f4d4 85.81%, #f4f4f478 94.61%);
-        transition: opacity 0.2s ease-in;
-        z-index: 1;
-        opacity: 0;
+    .backgroundImage {
+        > [class*="gatsby-image-wrapper"] {
+            position: absolute;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+        }
     }
+
     section {
         background: none;
+        position: relative;
         .indexForm {
             z-index: 1;
         }
+
         .imgContainer {
             position: absolute;
             top: 0;

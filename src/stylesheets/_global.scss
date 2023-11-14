@@ -214,6 +214,14 @@ a {
         --gradient: 28deg, #2a5208 0%, #002008 52.6%, #000 89.06%, #000 97.4%;
         @include mixins.gradient_before(linear-gradient(53.9deg, #53e075 -0.61%, #a2eeb5 12.89%, #f4f4f4 51.69%));
     }
+    &.variant9 {
+        --gradient: 94.07deg, rgba(159, 44, 155, 0.8) 2.67%, rgb(0 9 148 / 70%) 29.84%, #000000 84.6%, #000000 92.52%;
+        @include mixins.gradient_before(linear-gradient(94deg, rgba(246, 34, 230, 0.45) 9.62%, rgba(67, 79, 242, 0.65) 52.95%, #fff 95.9%));
+    }
+    &.variant10 {
+        --gradient: 146.71deg, rgba(106, 35, 104, 1) 0.43%, rgb(36 41 104 / 90%) 42.97%, rgb(0, 0, 0) 85.81%, rgb(0, 0, 0) 94.61%;
+        @include mixins.gradient_before(linear-gradient(146.71deg, #e387e0db 0.43%, #747acde6 40.97%, #f4f4f4d4 85.81%, #f4f4f478 94.61%));
+    }
 }
 
 // Color
@@ -291,7 +299,13 @@ body.light {
             opacity: 1;
         }
     }
-
+    .variant9 {
+        &[class*="Hero"] {
+            &::after {
+                opacity: 0;
+            }
+        }
+    }
     p {
         strong {
             --casperYellow: var(--casperBlue);
@@ -551,13 +565,7 @@ body.light {
             --mainColor: #bcfc07;
         }
     }
-    .variant9 {
-        &[class*="Hero"] {
-            &::after {
-                opacity: 0;
-            }
-        }
-    }
+
     @media (max-width: 996px) {
         [class*="NavBarDropdown"] {
             border: none !important;
