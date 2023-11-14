@@ -3,7 +3,7 @@ import * as styles from "./NewsletterFormComponent.module.scss";
 import Select from "react-select";
 import { icons } from "../../../svg/Icons";
 import Section from "../Section";
-import { StaticImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData, StaticImage } from "gatsby-plugin-image";
 
 export default function NewsletterFormComponent({ newsletterData }: any) {
     const [countries, setCountries] = useState([]);
@@ -14,6 +14,8 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
 
     const [submitError, setSubmitError] = useState<string>("");
     const [submitSuccess, setSubmitSuccess] = useState<string>("");
+
+    const backgroundImage = newsletterData.background_image?.imageFile?.childImageSharp?.gatsbyImageData;
 
     useEffect(() => {
         const getData = async () => {
@@ -185,167 +187,182 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
         if (e.key != "Enter") return;
         handleAgreeChange();
     }
+
     return (
-        <div className={styles.newsletterContainer} id="newsletter-form">
-            <Section
-                header="Begin your Casper journey"
-                subheader="Sign up for a series of five emails to introduce you to the Casper developer community"
+        <>
+            <div
+                className={`${styles.newsletterContainer} ${!backgroundImage && `gradient ${newsletterData.gradient}`} `}
+                id="newsletter-form"
             >
-                {submitSuccess && (
-                    <div className={`container ${styles.indexForm}`}>
-                        <div className="contentBox">
-                            <div className="span-12">
-                                <div className={styles.onSubmit}>
-                                    <h4>{submitSuccess}</h4>
+                {backgroundImage && (
+                    <div className={styles.backgroundImage}>
+                        {" "}
+                        <GatsbyImage image={backgroundImage} alt={"background_form"} />
+                    </div>
+                )}
+                <Section header={newsletterData.header} subheader={newsletterData.subheader}>
+                    {submitSuccess && (
+                        <div className={`container ${styles.indexForm}`}>
+                            <div className="contentBox">
+                                <div className="span-12">
+                                    <div className={styles.onSubmit}>
+                                        <h4>{submitSuccess}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                )}
-                {!submitSuccess && newsletterData && (
-                    <div className={`container ${styles.indexForm}`}>
-                        <div className="contentBox">
-                            <div className="span-12">
-                                <form className={styles.form}>
-                                    {submitError && (
-                                        <div className={styles.errorSubmit}>
-                                            {icons.error}
-                                            <h4>{submitError}</h4>
-                                        </div>
-                                    )}
-
-                                    <div className={styles.email}>
-                                        <label htmlFor="email">{newsletterData.email_label}</label>
-                                        <input
-                                            value={email}
-                                            className="primaryParagraph"
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            onChange={handleEmailChange}
-                                            onBlur={handleEmailBlur}
-                                        />
-                                        {emailError && (
-                                            <label htmlFor="email Error" className={styles.error}>
-                                                {emailError}
-                                            </label>
-                                        )}
-                                    </div>
-
-                                    <div className={styles.name}>
-                                        <label htmlFor="first_name">{newsletterData.first_name_label}</label>
-                                        <input
-                                            value={firstName}
-                                            type="text"
-                                            name="first_name"
-                                            id="first_name"
-                                            onChange={handleFirstNameChange}
-                                            onBlur={handleFirstNameBlur}
-                                        />
-                                        {firstNameError && (
-                                            <label htmlFor="name Error" className={styles.error}>
-                                                {firstNameError}
-                                            </label>
-                                        )}
-                                    </div>
-
-                                    {renderSelect({
-                                        label: newsletterData.i_am_label,
-                                        options: iamOptions,
-                                        isMulti: false,
-                                        key: "i_am_label",
-                                        required: true,
-                                        defaultError: "I am is required"
-                                    })}
-
-                                    {renderSelect({
-                                        label: newsletterData.country_label,
-                                        options: countries,
-                                        isMulti: false,
-                                        key: "country_label",
-                                        required: true,
-                                        defaultError: "Country is required"
-                                    })}
-
-                                    {renderSelect({
-                                        label: newsletterData.preferred_language_label,
-                                        options: languageOptions,
-                                        isMulti: true,
-                                        key: "preferred_language_label",
-                                        required: false
-                                    })}
-
-                                    {renderSelect({
-                                        label: newsletterData.blockchain_familiarity_label,
-                                        options: blockchainOptions,
-                                        isMulti: false,
-                                        key: "blockchain_familiarity_label",
-                                        required: false
-                                    })}
-
-                                    {renderSelect({
-                                        label: newsletterData.interests_label,
-                                        options: interestsOptions,
-                                        isMulti: true,
-                                        key: "interests_label",
-                                        required: false
-                                    })}
-
-                                    <div className={styles.agreeBox}>
-                                        <div className={styles.agreeBox_checkbox}>
-                                            <input
-                                                type="checkbox"
-                                                id="checkbox"
-                                                className={styles.checkInput}
-                                                checked={agree}
-                                                onChange={handleAgreeChange}
-                                            />
-                                            <label
-                                                htmlFor="checkbox"
-                                                className={styles.checkbox}
-                                                tabIndex={0}
-                                                onKeyDown={handleCheckChange}
-                                            >
-                                                {icons.check}
-                                            </label>
-
-                                            <span className="primaryParagraph">{newsletterData.agree_label}</span>
-                                        </div>
-                                        {agreeError && (
-                                            <label htmlFor="Agree Error" className={styles.error}>
-                                                {agreeError}
-                                            </label>
-                                        )}
-                                    </div>
-
-                                    <div className={styles.description}>
-                                        <div
-                                            className={`${styles.paragraphContainer} secondaryParagraph`}
-                                            dangerouslySetInnerHTML={{ __html: newsletterData.description! }}
-                                        ></div>
-                                    </div>
-                                    <div>
-                                        <button type="button" className={`${styles.button} ${styles.primary}`} onClick={handleSubmit}>
-                                            <div className={`${styles.button_container} ${styles.primary_container}`}>
-                                                <p>{newsletterData.button_text}</p>
-                                                {icons.arrowRight}
+                    )}
+                    {!submitSuccess && newsletterData && (
+                        <div className={`container ${styles.indexForm}`}>
+                            <div className="contentBox">
+                                <div className="span-12">
+                                    <form className={styles.form}>
+                                        {submitError && (
+                                            <div className={styles.errorSubmit}>
+                                                {icons.error}
+                                                <h4>{submitError}</h4>
                                             </div>
-                                        </button>
-                                    </div>
-                                </form>
+                                        )}
+
+                                        <div className={styles.email}>
+                                            <label htmlFor="email">{newsletterData.email_label}</label>
+                                            <input
+                                                value={email}
+                                                className="primaryParagraph"
+                                                type="text"
+                                                name="email"
+                                                id="email"
+                                                onChange={handleEmailChange}
+                                                onBlur={handleEmailBlur}
+                                            />
+                                            {emailError && (
+                                                <label htmlFor="email Error" className={styles.error}>
+                                                    {emailError}
+                                                </label>
+                                            )}
+                                        </div>
+
+                                        <div className={styles.name}>
+                                            <label htmlFor="first_name">{newsletterData.first_name_label}</label>
+                                            <input
+                                                value={firstName}
+                                                type="text"
+                                                name="first_name"
+                                                id="first_name"
+                                                onChange={handleFirstNameChange}
+                                                onBlur={handleFirstNameBlur}
+                                            />
+                                            {firstNameError && (
+                                                <label htmlFor="name Error" className={styles.error}>
+                                                    {firstNameError}
+                                                </label>
+                                            )}
+                                        </div>
+
+                                        {renderSelect({
+                                            label: newsletterData.i_am_label,
+                                            options: iamOptions,
+                                            isMulti: false,
+                                            key: "i_am_label",
+                                            required: true,
+                                            defaultError: "I am is required"
+                                        })}
+
+                                        {renderSelect({
+                                            label: newsletterData.country_label,
+                                            options: countries,
+                                            isMulti: false,
+                                            key: "country_label",
+                                            required: true,
+                                            defaultError: "Country is required"
+                                        })}
+
+                                        {renderSelect({
+                                            label: newsletterData.preferred_language_label,
+                                            options: languageOptions,
+                                            isMulti: true,
+                                            key: "preferred_language_label",
+                                            required: false
+                                        })}
+
+                                        {renderSelect({
+                                            label: newsletterData.blockchain_familiarity_label,
+                                            options: blockchainOptions,
+                                            isMulti: false,
+                                            key: "blockchain_familiarity_label",
+                                            required: false
+                                        })}
+
+                                        {renderSelect({
+                                            label: newsletterData.interests_label,
+                                            options: interestsOptions,
+                                            isMulti: true,
+                                            key: "interests_label",
+                                            required: false
+                                        })}
+
+                                        <div className={styles.agreeBox}>
+                                            <div className={styles.agreeBox_checkbox}>
+                                                <input
+                                                    type="checkbox"
+                                                    id="checkbox"
+                                                    className={styles.checkInput}
+                                                    checked={agree}
+                                                    onChange={handleAgreeChange}
+                                                />
+                                                <label
+                                                    htmlFor="checkbox"
+                                                    className={styles.checkbox}
+                                                    tabIndex={0}
+                                                    onKeyDown={handleCheckChange}
+                                                >
+                                                    {icons.check}
+                                                </label>
+
+                                                <span className="primaryParagraph">{newsletterData.agree_label}</span>
+                                            </div>
+                                            {agreeError && (
+                                                <label htmlFor="Agree Error" className={styles.error}>
+                                                    {agreeError}
+                                                </label>
+                                            )}
+                                        </div>
+
+                                        <div className={styles.description}>
+                                            <div
+                                                className={`${styles.paragraphContainer} secondaryParagraph`}
+                                                dangerouslySetInnerHTML={{ __html: newsletterData.description! }}
+                                            ></div>
+                                        </div>
+                                        <div>
+                                            <button type="button" className={`${styles.button} ${styles.primary}`} onClick={handleSubmit}>
+                                                <div className={`${styles.button_container} ${styles.primary_container}`}>
+                                                    <p>{newsletterData.button_text}</p>
+                                                    {icons.arrowRight}
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-                <div className={styles.imgContainer}>
-                    <StaticImage src="../../../images/blank_ribbon_up.png" alt={"background ribbon"} className={styles.blank_ribbon_top} />
-                    <StaticImage
-                        src="../../../images/blank_ribbon.png"
-                        alt={"background ribbon"}
-                        className={styles.blank_ribbon_bottom}
-                    />{" "}
-                </div>
-            </Section>
-        </div>
+                    )}
+                    {!backgroundImage && (
+                        <div className={styles.imgContainer}>
+                            <StaticImage
+                                src="../../../images/blank_ribbon_up.png"
+                                alt={"background ribbon"}
+                                className={styles.blank_ribbon_top}
+                            />
+                            <StaticImage
+                                src="../../../images/blank_ribbon.png"
+                                alt={"background ribbon"}
+                                className={styles.blank_ribbon_bottom}
+                            />
+                        </div>
+                    )}
+                </Section>
+            </div>
+        </>
     );
 }

@@ -19,6 +19,7 @@ function Hero({ buttons, title, image, image_title, gradient, description, backg
         const regexForStripHTML = /<\/?[^>]+(>|$)/g;
         return text.replaceAll(regexForStripHTML, "");
     };
+
     return (
         <section className={`${styles.hero} gradient ${gradient} container`}>
             {background_image && <GatsbyImage image={background_image} alt={`Hero background`}></GatsbyImage>}

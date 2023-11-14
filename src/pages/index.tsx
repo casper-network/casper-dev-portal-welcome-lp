@@ -132,6 +132,15 @@ export const query = graphql`
                         preferred_language_label
                         blockchain_familiarity_label
                         interests_label
+                        gradient
+                        background_image {
+                            id
+                            imageFile {
+                                childImageSharp {
+                                    gatsbyImageData
+                                }
+                            }
+                        }
                     }
                 }
             }
