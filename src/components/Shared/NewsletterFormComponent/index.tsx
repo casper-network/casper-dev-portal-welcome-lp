@@ -11,6 +11,7 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
     const [languageOptions, setLanguageOptions] = useState([]);
     const [interestsOptions, setInterestsOptions] = useState([]);
     const [blockchainOptions, setBlockchainOptions] = useState([]);
+    const [legalConsentOptions, setLegalConsentOptions] = useState<any>(null);
 
     const [submitError, setSubmitError] = useState<string>("");
     const [submitSuccess, setSubmitSuccess] = useState<string>("");
@@ -26,6 +27,7 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
             setLanguageOptions(json.languageOptions);
             setInterestsOptions(json.interestsOptions);
             setBlockchainOptions(json.blockchainOptions);
+            setLegalConsentOptions(json.legalConsentOptions);
         };
 
         getData();
@@ -172,7 +174,17 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                 country_dropdown: selectValues["country_label"],
                 preferred_programming_language: selectValues["preferred_language_label"] ?? "",
                 interests__developer_portal_: selectValues["interests_label"] ?? "",
-                blockchain_familiarity: selectValues["blockchain_familiarity_label"] ?? ""
+                blockchain_familiarity: selectValues["blockchain_familiarity_label"] ?? "",
+                legal_consent: {
+                    value: agree,
+                    subscriptionTypeId: legalConsentOptions.communicationsCheckboxes[0].subscriptionTypeId,
+                    text: legalConsentOptions.communicationsCheckboxes[0].label
+                },
+                page_context: {
+                    hutk: null,
+                    pageUri: location.href,
+                    pageName: document.title
+                }
             })
         });
 
@@ -318,8 +330,14 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                                                 >
                                                     {icons.check}
                                                 </label>
-
-                                                <span className="primaryParagraph">{newsletterData.agree_label}</span>
+                                                {legalConsentOptions && (
+                                                    <span
+                                                        className="primaryParagraph"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: legalConsentOptions.communicationsCheckboxes[0].label
+                                                        }}
+                                                    ></span>
+                                                )}
                                             </div>
                                             {agreeError && (
                                                 <label htmlFor="Agree Error" className={styles.error}>
@@ -329,10 +347,14 @@ export default function NewsletterFormComponent({ newsletterData }: any) {
                                         </div>
 
                                         <div className={styles.description}>
-                                            <div
-                                                className={`${styles.paragraphContainer} secondaryParagraph`}
-                                                dangerouslySetInnerHTML={{ __html: newsletterData.description! }}
-                                            ></div>
+                                            {legalConsentOptions && (
+                                                <div className={`${styles.paragraphContainer} secondaryParagraph`}>
+                                                    <div dangerouslySetInnerHTML={{ __html: legalConsentOptions.privacyText }}></div>
+                                                    <div
+                                                        dangerouslySetInnerHTML={{ __html: legalConsentOptions.consentToProcessText }}
+                                                    ></div>
+                                                </div>
+                                            )}
                                         </div>
                                         <div>
                                             <button type="button" className={`${styles.button} ${styles.primary}`} onClick={handleSubmit}>
